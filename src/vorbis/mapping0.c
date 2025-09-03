@@ -6,11 +6,12 @@
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
  * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2010             *
- * by the Xiph.Org Foundation https://xiph.org/                     *
+ * by the Xiph.Org Foundation http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
  function: channel mapping 0 implementation
+ last mod: $Id$
 
  ********************************************************************/
 
@@ -44,6 +45,16 @@ static void mapping0_free_info(vorbis_info_mapping *i){
   }
 }
 
+static int ilog(unsigned int v){
+  int ret=0;
+  if(v)--v;
+  while(v){
+    ret++;
+    v>>=1;
+  }
+  return(ret);
+}
+
 static void mapping0_pack(vorbis_info *vi,vorbis_info_mapping *vm,
                           oggpack_buffer *opb){
   int i;
@@ -67,8 +78,8 @@ static void mapping0_pack(vorbis_info *vi,vorbis_info_mapping *vm,
     oggpack_write(opb,info->coupling_steps-1,8);
 
     for(i=0;i<info->coupling_steps;i++){
-      oggpack_write(opb,info->coupling_mag[i],ov_ilog(vi->channels-1));
-      oggpack_write(opb,info->coupling_ang[i],ov_ilog(vi->channels-1));
+      oggpack_write(opb,info->coupling_mag[i],ilog(vi->channels));
+      oggpack_write(opb,info->coupling_ang[i],ilog(vi->channels));
     }
   }else
     oggpack_write(opb,0,1);
@@ -92,7 +103,7 @@ static vorbis_info_mapping *mapping0_unpack(vorbis_info *vi,oggpack_buffer *opb)
   int i,b;
   vorbis_info_mapping0 *info=_ogg_calloc(1,sizeof(*info));
   codec_setup_info     *ci=vi->codec_setup;
-  if(vi->channels<=0)goto err_out;
+  memset(info,0,sizeof(*info));
 
   b=oggpack_read(opb,1);
   if(b<0)goto err_out;
@@ -108,11 +119,8 @@ static vorbis_info_mapping *mapping0_unpack(vorbis_info *vi,oggpack_buffer *opb)
     info->coupling_steps=oggpack_read(opb,8)+1;
     if(info->coupling_steps<=0)goto err_out;
     for(i=0;i<info->coupling_steps;i++){
-      /* vi->channels > 0 is enforced in the caller */
-      int testM=info->coupling_mag[i]=
-        oggpack_read(opb,ov_ilog(vi->channels-1));
-      int testA=info->coupling_ang[i]=
-        oggpack_read(opb,ov_ilog(vi->channels-1));
+      int testM=info->coupling_mag[i]=oggpack_read(opb,ilog(vi->channels));
+      int testA=info->coupling_ang[i]=oggpack_read(opb,ilog(vi->channels));
 
       if(testM<0 ||
          testA<0 ||
