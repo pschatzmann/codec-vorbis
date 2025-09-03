@@ -58,6 +58,7 @@ if __name__ == "__main__":
 
     if not push_tag(tag_name):
         sys.exit(3)
-
+    
     sys.exit(0)
+
 

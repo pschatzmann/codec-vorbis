@@ -6,6 +6,7 @@
 import os
 import shutil
 import subprocess
+import sys
 
 def setup_vorbis():
 
@@ -144,3 +145,5 @@ if __name__ == "__main__":
     # Patch includes for both vorbis and ogg
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
     patch_includes(os.path.join(project_root, 'src', 'vorbis'))
+
+    sys.exit(0)
