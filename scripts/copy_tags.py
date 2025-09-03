@@ -1,4 +1,13 @@
 #!/usr/bin/env python3
+
+# 
+# Main logic:
+# - processes all tags from the original vorbis repo
+# - checks out each tag
+# - runs the setup script
+# - creates and pushes the tag in the current repo
+#
+
 import os
 import subprocess
 import sys

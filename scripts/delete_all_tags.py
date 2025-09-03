@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+
+# 
+# Deletes all tags
+#
+
 import subprocess
 
 # Get all local tags

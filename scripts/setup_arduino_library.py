@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # 
 # Creates/Updates the Arduino library from the original source code
 #
