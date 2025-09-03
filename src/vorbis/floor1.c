@@ -167,6 +167,7 @@ static vorbis_info_floor *floor1_unpack (vorbis_info *vi,oggpack_buffer *opb){
 
   for(j=0,k=0;j<info->partitions;j++){
     count+=info->class_dim[info->partitionclass[j]];
+    if(count>VIF_POSIT) goto err_out;
     for(;k<count;k++){
       int t=info->postlist[k+2]=oggpack_read(opb,rangebits);
       if(t<0 || t>=(1<<rangebits))
@@ -1035,7 +1036,7 @@ static void *floor1_inverse1(vorbis_block *vb,vorbis_look_floor *in){
           }
         }
 
-        fit_value[i]=val+predicted&0x7fff;
+        fit_value[i]=(val+predicted)&0x7fff;
         fit_value[look->loneighbor[i-2]]&=0x7fff;
         fit_value[look->hineighbor[i-2]]&=0x7fff;
 
