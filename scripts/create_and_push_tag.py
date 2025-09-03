@@ -9,7 +9,7 @@ if len(sys.argv) != 2:
 tag_name = sys.argv[1]
 
 # Commit all changes with the tag name as the commit message
-push_cmd = ["git", "push", "origin", "main"]
+push_cmd = ["git", "push", "origin", "master"]
 try:
     subprocess.run(['git', 'add', '--all'], check=True)
     subprocess.run(['git', 'commit', '-m', tag_name], check=True)
