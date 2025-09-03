@@ -19,8 +19,17 @@ def get_local_tags():
     result = subprocess.run(['git', 'tag'], stdout=subprocess.PIPE, text=True, check=True)
     return set(tag.strip() for tag in result.stdout.splitlines() if tag.strip())
 
+def checkout():
+    original_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../original'))
+    vorbis_dir = os.path.join(original_dir, 'vorbis')
+    if not os.path.exists(vorbis_dir):
+        print(f"Cloning vorbis repository into {original_dir}...")
+        subprocess.run(["git", "clone", "https://github.com/xiph/vorbis.git", vorbis_dir], check=True)
+
 
 def main():
+    checkout()
+    
     vorbis_tags = get_vorbis_tags()
     local_tags = get_local_tags()
 

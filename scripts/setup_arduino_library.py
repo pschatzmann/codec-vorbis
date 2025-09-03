@@ -7,15 +7,6 @@ import subprocess
 
 def setup_vorbis():
 
-    original_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../original'))
-    vorbis_dir = os.path.join(original_dir, 'vorbis')
-    if not os.path.exists(vorbis_dir):
-        print(f"Cloning vorbis repository into {original_dir}...")
-        subprocess.run(["git", "clone", "https://github.com/xiph/vorbis.git", vorbis_dir], check=True)
-    # else:
-    #     print(f"Updating vorbis repository in {vorbis_dir}...")
-    #     subprocess.run(["git", "-C", vorbis_dir, "pull"], check=True)
-
     # Source directories
     include_src = os.path.abspath(os.path.join(os.path.dirname(__file__), '../original/vorbis/include'))
     lib_src = os.path.abspath(os.path.join(os.path.dirname(__file__), '../original/vorbis/lib'))
