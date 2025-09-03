@@ -9,14 +9,15 @@ if len(sys.argv) != 2:
 tag_name = sys.argv[1]
 
 # Commit all changes with the tag name as the commit message
-subprocess.run(['git', 'add', '.'], check=True)
-subprocess.run(['git', 'commit', '-m', tag_name], check=True)
 push_cmd = ["git", "push", "origin", "main"]
 try:
+    subprocess.run(['git', 'add', '-A'], check=True)
+    subprocess.run(['git', 'commit', '-m', tag_name], check=True)
     subprocess.run(push_cmd, check=True)
     print(f"Tag 'main' pushed to origin.")
 except subprocess.CalledProcessError:
     print(f"Failed to push tag 'main' to origin.")
+    exit(2)
 
 
 # Create the tag
