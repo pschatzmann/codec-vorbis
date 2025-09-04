@@ -12,6 +12,7 @@ import os
 import subprocess
 import sys
 import time
+import re
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 VORBIS_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, '../original/vorbis'))
@@ -38,6 +39,8 @@ def checkout():
 def update_library_properties_version(tag):
     """Update the version field in library.properties to the given tag."""
     lib_props_path = os.path.join(SCRIPT_DIR, '..', 'library.properties')
+    # Remove leading non-digit characters from tag
+    clean_tag = re.sub(r'^\D+', '', tag)
     if os.path.exists(lib_props_path):
         with open(lib_props_path, 'r', encoding='utf-8') as f:
             lines = f.readlines()
@@ -45,7 +48,7 @@ def update_library_properties_version(tag):
         changed = False
         for line in lines:
             if line.startswith('version='):
-                line = f'version={tag}\n'
+                line = f'version={clean_tag}\n'
                 changed = True
             new_lines.append(line)
         if changed:
