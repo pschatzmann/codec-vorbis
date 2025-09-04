@@ -35,6 +35,22 @@ def checkout():
         print(f"Cloning vorbis repository into {original_dir}...")
         subprocess.run(["git", "clone", "https://github.com/xiph/vorbis.git", vorbis_dir], check=True)
 
+def update_library_properties_version(tag):
+    """Update the version field in library.properties to the given tag."""
+    lib_props_path = os.path.join(SCRIPT_DIR, '..', 'library.properties')
+    if os.path.exists(lib_props_path):
+        with open(lib_props_path, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+        new_lines = []
+        changed = False
+        for line in lines:
+            if line.startswith('version='):
+                line = f'version={tag}\n'
+                changed = True
+            new_lines.append(line)
+        if changed:
+            with open(lib_props_path, 'w', encoding='utf-8') as f:
+                f.writelines(new_lines)
 
 def main():
     checkout()
@@ -51,6 +67,9 @@ def main():
             continue
         print(f"Checking out vorbis tag '{tag}'...")
         subprocess.run(['git', 'checkout', tag], cwd=VORBIS_DIR, check=True)
+
+        update_library_properties_version(tag)
+        
         print(f"Running setup_arduino_library.py for tag '{tag}'...")
         subprocess.run([sys.executable, SETUP_SCRIPT], check=True)
         print(f"Creating and pushing tag '{tag}'...")
