@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: libvorbis codec headers
- last mod: $Id: codec_internal.h,v 1.18 2003/12/30 11:02:22 xiphmont Exp $
+ last mod: $Id: codec_internal.h,v 1.15 2002/06/28 22:19:35 xiphmont Exp $
 
  ********************************************************************/
 
@@ -33,10 +33,7 @@ typedef struct vorbis_block_internal{
   float  ampmax;
   int    blocktype;
 
-  oggpack_buffer *packetblob[PACKETBLOBS]; /* initialized, must be freed; 
-					      blob [PACKETBLOBS/2] points to
-					      the oggpack_buffer in the 
-					      main vorbis_block */
+  ogg_uint32_t   packetblob_markers[PACKETBLOBS];
 } vorbis_block_internal;
 
 typedef void vorbis_look_floor;
@@ -58,10 +55,10 @@ typedef void vorbis_info_mapping;
 #include "psy.h"
 #include "bitrate.h"
 
-typedef struct private_state {
+typedef struct backend_lookup_state {
   /* local lookup storage */
   envelope_lookup        *ve; /* envelope lookup */    
-  int                     window[2];
+  float                  *window[2];
   vorbis_look_transform **transform[2];    /* block, type */
   drft_lookup             fft_look[2];
 
@@ -81,8 +78,7 @@ typedef struct private_state {
 
   bitrate_manager_state bms;
 
-  ogg_int64_t sample_count;
-} private_state;
+} backend_lookup_state;
 
 /* codec_setup_info contains all the setup information specific to the
    specific compression/decompression mode in progress (eg,
@@ -127,7 +123,7 @@ typedef struct codec_setup_info {
   highlevel_encode_setup hi; /* used only by vorbisenc.c.  It's a
                                 highly redundant structure, but
                                 improves clarity of program flow. */
-  int         halfrate_flag; /* painless downsample for decode */  
+  
 } codec_setup_info;
 
 extern vorbis_look_psy_global *_vp_global_look(vorbis_info *vi);
