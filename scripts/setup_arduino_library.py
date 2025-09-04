@@ -119,21 +119,24 @@ def patch_includes(dest_dir):
                 new_lines = []
                 changed = False
                 for line in lines:
+                    # Patch #include "..."
                     if line.strip().startswith('#include "'):
                         start = line.find('"') + 1
                         end = line.find('"', start)
                         inc_file = line[start:end]
                         inc_base = os.path.basename(inc_file)
-                        # Check if inc_file is in the same directory as the including file
                         inc_path = os.path.join(root, inc_file)
                         if os.path.exists(inc_path):
-                            # File exists in current directory, do not patch
                             pass
                         elif inc_base in header_locations:
                             new_path = header_locations[inc_base]
                             if inc_file != new_path:
                                 line = line.replace(inc_file, new_path)
                                 changed = True
+                    # Patch #include <ogg/ogg.h> to #include <ogg.h>
+                    if line.strip().startswith('#include <ogg/ogg.h>'):
+                        line = line.replace('<ogg/ogg.h>', '<ogg.h>')
+                        changed = True
                     new_lines.append(line)
                 if changed:
                     with open(file_path, 'w', encoding='utf-8') as f:
