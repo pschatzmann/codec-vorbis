@@ -63,12 +63,12 @@ static const ve_setup_data_template ve_setup_44_uncoupled={
 
   _psy_global_44,
   _global_mapping_44,
-  NULL,
+  _psy_stereo_modes_44,
 
   _floor_books,
   _floor,
-  _floor_short_mapping_44,
-  _floor_long_mapping_44,
+  2,
+  _floor_mapping_44,
 
   _mapres_template_44_uncoupled
 };
