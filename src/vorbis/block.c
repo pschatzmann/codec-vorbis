@@ -5,8 +5,8 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2003             *
- * by the XIPHOPHORUS Company http://www.xiph.org/                  *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2007             *
+ * by the Xiph.Org Foundation http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
@@ -326,20 +326,23 @@ void vorbis_dsp_clear(vorbis_dsp_state *v){
       }
 
       if(b->flr){
-	for(i=0;i<ci->floors;i++)
-	  _floor_P[ci->floor_type[i]]->
-	    free_look(b->flr[i]);
+	if(ci)
+	  for(i=0;i<ci->floors;i++)
+	    _floor_P[ci->floor_type[i]]->
+	      free_look(b->flr[i]);
 	_ogg_free(b->flr);
       }
       if(b->residue){
-	for(i=0;i<ci->residues;i++)
-	  _residue_P[ci->residue_type[i]]->
-	    free_look(b->residue[i]);
+	if(ci)
+	  for(i=0;i<ci->residues;i++)
+	    _residue_P[ci->residue_type[i]]->
+	      free_look(b->residue[i]);
 	_ogg_free(b->residue);
       }
       if(b->psy){
-	for(i=0;i<ci->psys;i++)
-	  _vp_psy_clear(b->psy+i);
+	if(ci)
+	  for(i=0;i<ci->psys;i++)
+	    _vp_psy_clear(b->psy+i);
 	_ogg_free(b->psy);
       }
 
@@ -352,8 +355,9 @@ void vorbis_dsp_clear(vorbis_dsp_state *v){
     }
     
     if(v->pcm){
-      for(i=0;i<vi->channels;i++)
-	if(v->pcm[i])_ogg_free(v->pcm[i]);
+      if(vi)
+	for(i=0;i<vi->channels;i++)
+	  if(v->pcm[i])_ogg_free(v->pcm[i]);
       _ogg_free(v->pcm);
       if(v->pcmret)_ogg_free(v->pcmret);
     }
