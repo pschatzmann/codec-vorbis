@@ -5,13 +5,13 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
- * by the XIPHOPHORUS Company http://www.xiph.org/                  *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2007             *
+ * by the Xiph.Org Foundation http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
  function: 16kHz settings 
- last mod: $Id: setup_16.h,v 1.5 2002/10/11 11:14:42 xiphmont Exp $
+ last mod: $Id$
 
  ********************************************************************/
 
@@ -65,7 +65,7 @@ ve_setup_data_template ve_setup_16_stereo={
   _vp_tonemask_adj_16,
   _vp_tonemask_adj_16,
 
-  _psy_noiseguards_8,
+  _psy_noiseguards_16,
   _psy_noisebias_16_impulse,
   _psy_noisebias_16_short,
   _psy_noisebias_16_short,
