@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: single-block PCM analysis mode dispatch
- last mod: $Id: analysis.c,v 1.56 2003/12/30 11:02:22 xiphmont Exp $
+ last mod: $Id: analysis.c,v 1.55 2002/07/11 06:40:48 xiphmont Exp $
 
  ********************************************************************/
 
@@ -30,8 +30,7 @@ int analysis_noisy=1;
 
 /* decides between modes, dispatches to the appropriate mapping. */
 int vorbis_analysis(vorbis_block *vb, ogg_packet *op){
-  int ret,i;
-  vorbis_block_internal *vbi=vb->internal;
+  int                   ret;
 
   vb->glue_bits=0;
   vb->time_bits=0;
@@ -39,8 +38,7 @@ int vorbis_analysis(vorbis_block *vb, ogg_packet *op){
   vb->res_bits=0;
 
   /* first things first.  Make sure encode is ready */
-  for(i=0;i<PACKETBLOBS;i++)
-    oggpack_reset(vbi->packetblob[i]);
+  oggpack_reset(&vb->opb);
   
   /* we only have one mapping type (0), and we let the mapping code
      itself figure out what soft mode to use.  This allows easier

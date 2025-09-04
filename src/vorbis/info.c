@@ -5,13 +5,13 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2003             *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
  function: maintain the info structure, info <-> header packets
- last mod: $Id$
+ last mod: $Id: info.c,v 1.59 2002/07/18 01:43:09 xiphmont Exp $
 
  ********************************************************************/
 
@@ -416,7 +416,7 @@ static int _vorbis_pack_info(oggpack_buffer *opb,vorbis_info *vi){
 }
 
 static int _vorbis_pack_comment(oggpack_buffer *opb,vorbis_comment *vc){
-  char temp[]="Xiph.Org libVorbis I 20050304";
+  char temp[]="Xiph.Org libVorbis I 20020717";
   int bytes = strlen(temp);
 
   /* preamble */  
@@ -517,7 +517,6 @@ int vorbis_commentheader_out(vorbis_comment *vc,
   op->b_o_s=0;
   op->e_o_s=0;
   op->granulepos=0;
-  op->packetno=1;
 
   return 0;
 }
@@ -530,7 +529,7 @@ int vorbis_analysis_headerout(vorbis_dsp_state *v,
   int ret=OV_EIMPL;
   vorbis_info *vi=v->vi;
   oggpack_buffer opb;
-  private_state *b=v->backend_state;
+  backend_lookup_state *b=v->backend_state;
 
   if(!b){
     ret=OV_EFAULT;
@@ -551,7 +550,6 @@ int vorbis_analysis_headerout(vorbis_dsp_state *v,
   op->b_o_s=1;
   op->e_o_s=0;
   op->granulepos=0;
-  op->packetno=0;
 
   /* second header packet (comments) **********************************/
 
@@ -566,7 +564,6 @@ int vorbis_analysis_headerout(vorbis_dsp_state *v,
   op_comm->b_o_s=0;
   op_comm->e_o_s=0;
   op_comm->granulepos=0;
-  op_comm->packetno=1;
 
   /* third header packet (modes/codebooks) ****************************/
 
@@ -581,7 +578,6 @@ int vorbis_analysis_headerout(vorbis_dsp_state *v,
   op_code->b_o_s=0;
   op_code->e_o_s=0;
   op_code->granulepos=0;
-  op_code->packetno=2;
 
   oggpack_writeclear(&opb);
   return(0);
@@ -600,8 +596,3 @@ int vorbis_analysis_headerout(vorbis_dsp_state *v,
   return(ret);
 }
 
-double vorbis_granule_time(vorbis_dsp_state *v,ogg_int64_t granulepos){
-  if(granulepos>=0)
-    return((double)granulepos/v->vi->rate);
-  return(-1);
-}
