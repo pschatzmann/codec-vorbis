@@ -46,7 +46,7 @@
    implementation.  The float lookup is likely the optimal choice on
    any machine with an FPU.  The integer implementation is *not* fixed
    point (due to the need for a large dynamic range and thus a
-   seperately tracked exponent) and thus much more complex than the
+   separately tracked exponent) and thus much more complex than the
    relatively simple float implementations. It's mostly for future
    work on a fully fixed point implementation for processors like the
    ARM family. */
@@ -81,11 +81,11 @@ void vorbis_lsp_to_curve(float *curve,int *map,int n,int ln,float *lsp,int m,
     float *ftmp=lsp;
     int c=m>>1;
 
-    do{
+    while(c--){
       q*=ftmp[0]-w;
       p*=ftmp[1]-w;
       ftmp+=2;
-    }while(--c);
+    }
 
     if(m&1){
       /* odd order filter; slightly assymetric */
