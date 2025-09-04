@@ -5,7 +5,7 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2014             *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2015             *
  * by the Xiph.Org Foundation http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
@@ -89,7 +89,6 @@ extern float *_book_logdist(const static_codebook *b,float *vals);
 extern float _float32_unpack(long val);
 extern long   _float32_pack(float val);
 extern int  _best(codebook *book, float *a, int step);
-extern int _ilog(unsigned int v);
 extern long _book_maptype1_quantvals(const static_codebook *b);
 
 extern int vorbis_book_besterror(codebook *book,float *a,int step,int addmul);
